@@ -13,6 +13,12 @@ export class UserService {
     private readonly userRepository: Repository<User>
   ) { }
 
+  async userLogin() {
+    return "work"
+    // const { email } = user
+    // return this.userRepository.findOneBy({ email })
+  }
+
   create(createUserDto: CreateUserDto) {
     return { user: "Mauricio" }
   }
