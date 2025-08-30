@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity()
-export class User {
+export class Career {
 
   @PrimaryGeneratedColumn('uuid')
   id: string
@@ -16,24 +16,24 @@ export class User {
     type: 'text',
     nullable: false
   })
-  surname1: string
+  description: string
 
   @Column({
     type: 'text',
-    nullable: true
+    nullable: false
   })
-  surname2: string
+  date: string
+
+  @Column({
+    type: 'float',
+    nullable: false
+  })
+  distance: number
 
   @Column({
     type: 'text',
-    nullable: true
+    nullable: false
   })
-  email: string
-
-  @Column({
-    type: 'text',
-    nullable: true
-  })
-  password: string
+  place: string
 
 }
