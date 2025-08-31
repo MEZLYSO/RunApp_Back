@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { isUUID } from 'class-validator';
 
 @Injectable()
 export class UserService {
@@ -17,18 +18,33 @@ export class UserService {
     try {
       const user = this.userRepository.create(createUserDto)
       await this.userRepository.save(user)
+      console.log("Creado")
       return user
     } catch (error) {
       throw new InternalServerErrorException(`Error:${error}`)
     }
   }
 
-  findAll() {
-    return this.userRepository.find()
+  async findAll() {
+    const users: User[] = await this.userRepository.find()
+    return users.map(({ password, ...data }) => data)
   }
 
-  findOne(id: string) {
-    return this.userRepository.findBy({ id })
+  async findOne(term: string) {
+
+    let user: User | null = null
+
+    if (isUUID(term)) {
+      user = await this.userRepository.findOneBy({ id: term })
+    } else {
+      user = await this.userRepository.findOneBy({ email: term })
+    }
+
+    if (!user) {
+      throw new BadRequestException("Not Found")
+    }
+    const { password, ...data } = user
+    return data
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
@@ -48,8 +64,22 @@ export class UserService {
   }
 
   async remove(id: string) {
-    const user = await this.findOne(id)
+    const user = await this.findOneComplete(id)
     await this.userRepository.remove(user)
     return
   }
+
+  async findOneComplete(term: string) {
+    let user: User | null = null
+    if (isUUID(term)) {
+      user = await this.userRepository.findOneBy({ id: term })
+    } else {
+      user = await this.userRepository.findOneBy({ email: term })
+    }
+    if (!user) {
+      throw new BadRequestException('Not Found')
+    }
+    return user
+  }
+
 }
