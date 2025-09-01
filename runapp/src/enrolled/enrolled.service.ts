@@ -40,8 +40,16 @@ export class EnrolledService {
 
   async findAll() {
     // Definicion temporal
-    return await this.enrolledRepository.find({
+    const usersEnrolled = await this.enrolledRepository.find({
       relations: ['user', 'career']
+    })
+
+    return usersEnrolled.map(({ user, ...data }) => {
+
+      const { password, ...dataUser } = user
+
+      return { user: dataUser, ...data }
+
     })
   }
 
