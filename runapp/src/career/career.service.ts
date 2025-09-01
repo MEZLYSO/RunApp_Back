@@ -4,6 +4,7 @@ import { UpdateCareerDto } from './dto/update-career.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Career } from './entities/career.entity';
 import { Repository } from 'typeorm';
+import { isUUID } from 'class-validator';
 
 @Injectable()
 export class CareerService {
@@ -27,8 +28,19 @@ export class CareerService {
     return this.careerRepository.find({})
   }
 
-  findOne(id: string) {
-    return this.careerRepository.findBy({ id })
+  async findOne(id: string) {
+
+    let career: Career | null = null
+
+    if (isUUID(id)) {
+      career = await this.careerRepository.findOneBy({ id: id })
+    }
+
+    if (!career) {
+      throw new BadRequestException("Not found")
+    }
+
+    return career
   }
 
   async update(id: string, updateCareerDto: UpdateCareerDto) {

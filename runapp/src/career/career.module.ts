@@ -10,6 +10,6 @@ import { Career } from './entities/career.entity';
   imports: [
     TypeOrmModule.forFeature([Career])
   ],
-  exports: [TypeOrmModule]
+  exports: [TypeOrmModule, CareerService]
 })
 export class CareerModule { }

@@ -1,4 +1,5 @@
-import { IsEmail, IsString, MinLength } from 'class-validator'
+import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator'
+import { Career } from 'src/career/entities/career.entity'
 
 export class CreateUserDto {
 
@@ -21,4 +22,9 @@ export class CreateUserDto {
   @IsString()
   @MinLength(8)
   password: string
+
+  @IsString({ each: true })
+  @IsOptional()
+  careers?: Career[]
+
 }
