@@ -5,7 +5,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 @Entity()
 export class Enrolled {
 
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string
 
   @ManyToOne(
@@ -24,9 +24,9 @@ export class Enrolled {
   rfid: string
 
   @Column({
-    type: 'float',
+    type: 'text',
     nullable: true
   })
-  timeStart: number
+  timeEnd: string
 
 }

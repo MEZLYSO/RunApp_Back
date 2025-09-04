@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { EnrolledService } from './enrolled.service';
 import { CreateEnrolledDto } from './dto/create-enrolled.dto';
 import { UpdateEnrolledDto } from './dto/update-enrolled.dto';
+import { InsertTimeDto } from './dto/inserTime-enrolled.dto';
 
 @Controller('enrolled')
 export class EnrolledController {
@@ -10,6 +11,14 @@ export class EnrolledController {
   @Post()
   userEnrolled(@Body() createEnrolledDto: CreateEnrolledDto) {
     return this.enrolledService.createEnrolled(createEnrolledDto);
+  }
+
+  @Patch('time/:rfid')
+  insertTime(
+    @Param('rfid') rfid: string,
+    @Body() insertTimeDto: InsertTimeDto
+  ) {
+    return this.enrolledService.insertTime(rfid, insertTimeDto)
   }
 
   @Get()
@@ -31,4 +40,5 @@ export class EnrolledController {
   remove(@Param('id') id: string) {
     return this.enrolledService.remove(+id);
   }
+
 }

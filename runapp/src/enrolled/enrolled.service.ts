@@ -6,6 +6,7 @@ import { CareerService } from 'src/career/career.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Enrolled } from './entities/enrolled.entity';
 import { Repository } from 'typeorm';
+import { InsertTimeDto } from './dto/inserTime-enrolled.dto';
 
 @Injectable()
 export class EnrolledService {
@@ -45,12 +46,24 @@ export class EnrolledService {
     })
 
     return usersEnrolled.map(({ user, ...data }) => {
-
       const { password, ...dataUser } = user
-
       return { user: dataUser, ...data }
-
     })
+    // return usersEnrolled
+  }
+
+  async insertTime(rfid: string, insertTimeDto: InsertTimeDto) {
+
+    const enrolledEntity = await this.enrolledRepository.findOne({
+      where: { rfid },
+      relations: ['user', 'career']
+    })
+    if (!enrolledEntity) {
+      throw new BadRequestException('Not Found')
+    }
+    Object.assign(enrolledEntity, insertTimeDto)
+    await this.enrolledRepository.save(enrolledEntity)
+    return
   }
 
   findOne(id: number) {
@@ -63,5 +76,9 @@ export class EnrolledService {
 
   remove(id: number) {
     return `This action removes a #${id} enrolled`;
+  }
+
+  removeEnrolledByUserId(id: number) {
+
   }
 }
