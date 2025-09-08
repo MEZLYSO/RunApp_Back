@@ -1,5 +1,4 @@
-import { Enrolled } from 'src/enrolled/entities/enrolled.entity'
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity()
 export class User {
@@ -36,12 +35,5 @@ export class User {
     nullable: true
   })
   password: string
-
-  @OneToMany(
-    () => Enrolled,
-    (enrolled) => enrolled.user,
-    { eager: true }
-  )
-  enrolled: Enrolled[]
 
 }
