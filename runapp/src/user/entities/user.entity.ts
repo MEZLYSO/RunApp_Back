@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Enrolled } from 'src/enrolled/entities/enrolled.entity'
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity()
 export class User {
@@ -26,7 +27,8 @@ export class User {
 
   @Column({
     type: 'text',
-    nullable: true
+    nullable: true,
+    unique: true
   })
   email: string
 
@@ -35,5 +37,7 @@ export class User {
     nullable: true
   })
   password: string
+
+  enrolled: Enrolled[]
 
 }

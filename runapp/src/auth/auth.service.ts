@@ -24,7 +24,6 @@ export class AuthService {
   }
 
   async userSignup(createUserDto: CreateUserDto) {
-    console.log(createUserDto)
     const userCreated = await this.userService.create(createUserDto)
     const { password, ...data } = userCreated
     return data
